@@ -15,9 +15,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
 
-
+""" helper functie om data uit de json te halen en om te zetten naar numpy array voor sklearn"""
 def extract_from_json_as_np_array(key, json_data):
-    """ helper functie om data uit de json te halen en om te zetten naar numpy array voor sklearn"""
     data_as_array = []
     for p in json_data:
         data_as_array.append(p[key])
@@ -25,13 +24,15 @@ def extract_from_json_as_np_array(key, json_data):
     return np.array(data_as_array)
 
 
-STUDENTNUMMER = "0931871" # TODO: aanpassen aan je eigen studentnummer
+STUDENTNUMMER = "0931871"
 
+# If/-statement
 assert STUDENTNUMMER != "1234567", "Verander 1234567 in je eigen studentnummer"
 
+# Console.log
 print("STARTER CODE")
 
-# maak een data-object aan om jouw data van de server op te halen
+# Een data-object die jouw data van de server op haald
 data = Machine_Learning_Data(STUDENTNUMMER)
 
 
@@ -40,21 +41,19 @@ data = Machine_Learning_Data(STUDENTNUMMER)
 # haal clustering data op
 kmeans_training = data.clustering_training()
 
-# extract de x waarden
-X = extract_from_json_as_np_array("x", kmeans_training)
-
-#print(X)
+# extract de x waarden, In X zitten alle waaarden 
+X = extract_from_json_as_np_array("x", kmeans_training)                                                 # In X zitten alle x en y waarden. 
 
 # slice kolommen voor plotten (let op, dit is de y voor de y-as, niet te verwarren met een y van de data)
-x = X[...,0]
-y = X[...,1]
+x = X[...,0]                                                                                            #Alle X-coordinaten
+y = X[...,1]                                                                                            #Alle Y-coordinaten
 
 # teken de punten
 for i in range(len(x)):
-    plt.plot(x[i], y[i], 'k.') # k = zwart
+    plt.plot(x[i], y[i], 'k.')                                                                          # k = zwart
 
-plt.axis([min(x), max(x), min(y), max(y)])
-plt.show()
+plt.axis([min(x), max(x), min(y), max(y)])                                                              # De assen zetten.
+plt.show()                                                                                              # Shows de plot
 
 # TODO: print deze punten uit en omcirkel de mogelijke clusters
 
