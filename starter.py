@@ -14,6 +14,8 @@ from machinelearningdata import Machine_Learning_Data
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import accuracy_score
+from sklearn.cluster import KMeans
+from sklearn import tree
 
 """ helper functie om data uit de json te halen en om te zetten naar numpy array voor sklearn"""
 def extract_from_json_as_np_array(key, json_data):
@@ -48,17 +50,42 @@ X = extract_from_json_as_np_array("x", kmeans_training)                         
 x = X[...,0]                                                                                            #Alle X-coordinaten
 y = X[...,1]                                                                                            #Alle Y-coordinaten
 
-# teken de punten
-for i in range(len(x)):
-    plt.plot(x[i], y[i], 'k.')                                                                          # k = zwart
 
+# teken de punten uit je data
+for i in range(len(x)):
+    plt.plot(x[i], y[i], 'k')                                                                           # k = zwart, r = rood
+    plt.title('k means centroids Alara')
+    
 plt.axis([min(x), max(x), min(y), max(y)])                                                              # De assen zetten.
-plt.show()                                                                                              # Shows de plot
+
 
 # TODO: print deze punten uit en omcirkel de mogelijke clusters
+circle1 = plt.Circle((28,48), 30, color="r", fill=False)
+circle2 = plt.Circle((60,80), 30, color="r", fill=False)
+circle3 = plt.Circle((87,14), 30, color="r", fill=False)
+circle4 = plt.Circle((3,1), 30, color="r", fill=False)
+circle5 = plt.Circle((14,96), 30, color="r", fill=False)
 
+getFigure = plt.gcf()                                                                                   #Krijg het figuur
+ax=getFigure.gca()                                                                                      #Krijg de polaire assen binnen van het figuur, 30
+
+# Voeg de circles toe
+ax.add_artist(circle1)
+ax.add_artist(circle2)
+ax.add_artist(circle3)
+ax.add_artist(circle4)
+ax.add_artist(circle5)
 
 # TODO: ontdek de clusters mbv kmeans en teken een plot met kleurtjes
+km = KMeans(n_clusters=5).fit(X)                                                                        #5 Klusters met de punten van X
+centers = km.cluster_centers_                                                                           #Coordination of cluster center
+group_dots = km.labels_                                                                                 #Predict cluster index voor elke cluster
+
+plt.scatter(x, y, c=group_dots, s=8)                                                                    #De punten van X kleuren.
+plt.scatter(centers[...,0], centers[...,1], marker="x", c='red')                                        #De center's
+
+plt.show()                                                                                              #Plot alles
+
 
 
 # SUPERVISED LEARNING

@@ -70,11 +70,11 @@ class Machine_Learning_Data():
 
 
 
-if __name__ == '__main__':
-    data = Machine_Learning_Data("1234567")
+# if __name__ == '__main__':
+#     data = Machine_Learning_Data("1234567")
 
 
-    kmeans_training = data.kmeans_traing()
+#     kmeans_training = data.kmeans_traing()
 
-    for p in kmeans_training:
-            print(p)
+#     for p in kmeans_training:
+#             print(p)
