@@ -120,7 +120,6 @@ X_Training = extract_from_json_as_np_array("x", classification_training)
 # dit zijn de werkelijke waarden, daarom kan je die gebruiken om te trainen
 # Y is gevuld met de cijfers 0 en 1
 Y_Training = extract_from_json_as_np_array("y", classification_training)
-#print(Y_Training)
 
 # TODO: leer de classificaties
 x_Classification = X_Training[...,0]                                                                                            #Alle X-coordinaten
@@ -138,7 +137,7 @@ plt.show()
 
 #Logistic Regression
 logistic_Clasifier = LogisticRegression().fit(X_Training, Y_Training)                                    #Voed de functie  de (Coordinaten, en binaire cijfers.)
-Y1_Predict = logistic_Clasifier.predict(X_Training)                                                       #Logisit Regression predict welke coordinaten logischer wijze
+Y1_Predict = logistic_Clasifier.predict(X_Training)                                                      #Logisit Regression predict welke coordinaten logischer wijze
                                                                                                          #bij welke Y(binaire cijfer) hoort.
 
 #Decision Tree
@@ -165,25 +164,46 @@ for i in range(len(y_Classification)):
 plt.show()
 
 # TODO: vergelijk Y_predict met de echte Y om te zien hoe goed je getraind hebt
-print("Accuracy Score Logistic Trainingsdata:", accuracy_score(Y_Training, Y1_Predict))                   #Kijken of de gemaakte assumptie/predictie correct is. 
-print("Accuracy Score Decision Tree Trainingsdata:", accuracy_score(Y_Training, Y2_Predict))
+print("Accuracy Score Logistic Trainingsdata:", accuracy_score(Y_Training, Y1_Predict))                    #Kijken of de gemaakte assumptie/predictie correct is. 
+print("Accuracy Score Decision Tree Trainingsdata:", accuracy_score(Y_Training, Y2_Predict))               # Accuracy score checkt hoeveel beide data op elkaar lijkt. Hoe dichter bij de 1, hoe meer 1 op 1 dezelfde data het is. 
+
 ################################################################################################
 ################################################################################################
 
 # haal data op om te testen
 classification_test = data.classification_test()
 # testen doen we 'geblinddoekt' je krijgt nu de Y's niet
-X_test = extract_from_json_as_np_array("x", classification_test)
+X_Test = extract_from_json_as_np_array("x", classification_test)
 
-# TODO: voorspel na nog een keer de Y-waarden, en plaats die in de variabele Z
+#Plot de test data
+x_Test = X_Test[...,0]                                                                                            #Alle X-coordinaten
+y_Test = X_Test[...,1]
+
+plt.title('Test Coordinations of Alara')
+plt.scatter(x_Test, y_Test, marker="+", color='red')
+
+plt.show()
+# TODO: voorspel nog een keer de Y-waarden, en plaats die in de variabele Z
 #       je kunt nu zelf niet testen hoe goed je het gedaan hebt omdat je nu
 #       geen echte Y-waarden gekregen hebt.
 #       onderstaande code stuurt je voorspelling naar de server, die je dan
 #       vertelt hoeveel er goed waren.
 
-Z = np.zeros(100) # dit is een gok dat alles 0 is... kan je zelf voorspellen hoeveel procent er goed is?
+# Dit is een gok dat alles 0 is... kan je zelf voorspellen hoeveel procent er goed is?
+# Z = np.zeros(100)
+# print("Z test data waardes:", Z)
+
+#Logistic Regression
+Z_Logistic = logistic_Clasifier.predict(X_Test)                                                          #Logisit Regression predict welke coordinaten logischer wijze
+                                                                                                         #bij welke Y(binaire cijfer) hoort.
+#Decision Tree
+Z_Tree = decisionTree_Classifier.predict(X_Test)
 
 # stuur je voorspelling naar de server om te kijken hoe goed je het gedaan hebt
-classification_test = data.classification_test(Z.tolist()) # tolist zorgt ervoor dat het numpy object uit de predict omgezet wordt naar een 'normale' lijst van 1'en en 0'en
-print("Classificatie accuratie (test): " + str(classification_test))
+classification_test_Y3 = data.classification_test(Z_Logistic.tolist()) # tolist zorgt ervoor dat het numpy object uit de predict omgezet wordt naar een 'normale' lijst van 1'en en 0'en
+print("Classificatie Logistic accuratie (test-data): " + str(classification_test_Y3))
+
+# stuur je voorspelling naar de server om te kijken hoe goed je het gedaan hebt
+classification_test_Y4 = data.classification_test(Z_Tree.tolist()) # tolist zorgt ervoor dat het numpy object uit de predict omgezet wordt naar een 'normale' lijst van 1'en en 0'en
+print("Classificatie Decision Tree accuratie (test-data): " + str(classification_test_Y4))
 
